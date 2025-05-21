@@ -1,0 +1,35 @@
+services:
+  itqan-app:
+    container_name: itqan-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 82:8080
+    volumes:
+      - .:/var/www/html
+    environment:
+      - AUTORUN_ENABLED=true
+
+  itqan-db:
+    container_name: itqan-db
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - itqan-db-data:/var/lib/postgresql/data
+
+  itqan-adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 7070:8080
+
+
+
+volumes:
+  itqan-db-data:
