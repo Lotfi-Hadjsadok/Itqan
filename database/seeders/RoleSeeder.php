@@ -7,9 +7,5 @@ use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    public function run(): void
-    {
-        Role::firstOrCreate(['name' => 'teacher']);
-        Role::firstOrCreate(['name' => 'student']);
-    }
+    public function run(): void {}
 }
