@@ -45,13 +45,9 @@ class TeacherResource extends Resource
                         Forms\Components\TextInput::make('user.password')
                             ->label(__('Password'))
                             ->password()
-                            ->required()
+                            ->required(fn($record) => $record?->id === null)
                             ->dehydrateStateUsing(fn($state) => bcrypt($state)),
-                    ])->visible(function (string $operation) {
-                        return $operation === 'create';
-                    }),
-
-             
+                    ]),
             ]);
     }
 
