@@ -12,6 +12,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Fieldset;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\Component;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -55,7 +56,11 @@ class StudentResource extends Resource
                             ->password()
                             ->required()
                             ->dehydrateStateUsing(fn($state) => bcrypt($state)),
-                    ]),
+                    ])->visible(function (string $operation) {
+                        return $operation === 'create';
+                    }),
+
+
                 Forms\Components\TextInput::make('father_name')
                     ->label(__('Father Name'))
                     ->maxLength(255),

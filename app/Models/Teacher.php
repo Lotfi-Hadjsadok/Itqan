@@ -2,9 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
-class Teacher extends Pivot
+class Teacher extends Model
 {
-    //
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($teacher) {
+            $teacher->user()->delete();
+        });
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -16,7 +16,7 @@ class CreateStudent extends CreateRecord
         $userData = $data['user'];
         unset($data['user']);
 
-        $user = User::create($userData)->assignRole('student', 'teacher', 'admin');
+        $user = User::create($userData)->assignRole('student');
 
 
         $data['user_id'] = $user->id;
