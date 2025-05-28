@@ -8,9 +8,12 @@ use App\Models\Group;
 use App\Models\Student;
 use App\Models\Teacher;
 use Filament\Forms\Form;
+use App\Filament\Resources\GroupResource\Pages\ManageSeances;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Resources\Pages\Page;
 use App\Filament\Resources\GroupResource\Pages;
+use App\Filament\Resources\GroupRessourceResource\RelationManagers\SeancesRelationManager;
 
 class GroupResource extends Resource
 {
@@ -79,15 +82,9 @@ class GroupResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label(__('Updated at')),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('view')
-                    ->label(__('View'))
-                    ->icon('heroicon-o-eye')
-                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -98,9 +95,7 @@ class GroupResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [SeancesRelationManager::class];
     }
 
     public static function getPages(): array
@@ -109,6 +104,7 @@ class GroupResource extends Resource
             'index' => Pages\ListGroups::route('/'),
             'create' => Pages\CreateGroup::route('/create'),
             'edit' => Pages\EditGroup::route('/{record}/edit'),
+            'seances' => ManageSeances::route('/{record}/seances'),
         ];
     }
 }

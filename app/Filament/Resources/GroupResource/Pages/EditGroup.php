@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\GroupResource\Pages;
 
-use App\Filament\Resources\GroupResource;
 use Filament\Actions;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\GroupResource;
+use App\Filament\Resources\GroupResource\Pages\ManageSeances;
 
 class EditGroup extends EditRecord
 {
@@ -15,5 +17,12 @@ class EditGroup extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            ManageSeances::class,
+        ]);
     }
 }
