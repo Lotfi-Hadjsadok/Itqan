@@ -17,6 +17,15 @@ class SeanceResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static bool $shouldRegisterNavigation = false;
 
+    public static function getModelLabel(): string
+    {
+        return __('Seance');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Seances');
+    }
 
     public static function form(Form $form): Form
     {
@@ -62,9 +71,6 @@ class SeanceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSeances::route('/'),
-            'create' => Pages\CreateSeance::route('/create'),
-            'edit' => Pages\EditSeance::route('/{record}/edit'),
             'performances' => Pages\ManagePerformances::route('/{record}/performances'),
         ];
     }

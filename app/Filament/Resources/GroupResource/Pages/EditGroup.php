@@ -19,6 +19,15 @@ class EditGroup extends EditRecord
         ];
     }
 
+    protected function getFormActions(): array
+    {
+        if (auth()->user()->hasRole('admin') || auth()->user()->teacher) {
+            return parent::getFormActions(); // show submit button
+        }
+
+        return []; // hide for non-admins
+    }
+
     public static function getRecordSubNavigation(Page $page): array
     {
         return $page->generateNavigationItems([

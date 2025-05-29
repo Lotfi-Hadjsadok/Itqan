@@ -17,11 +17,21 @@ class TeacherResource extends Resource
 {
     protected static ?string $model = Teacher::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Users');
+    }
 
     public static function getModelLabel(): string
     {
         return __('Teacher');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 
     public static function getPluralModelLabel(): string

@@ -23,7 +23,6 @@ class StudentResource extends Resource
     protected static ?string $model = Student::class;
 
 
-
     public static function getModelLabel(): string
     {
         return __('Student');
@@ -34,8 +33,17 @@ class StudentResource extends Resource
         return __('Students');
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Users');
+    }
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    protected static ?string $navigationIcon = 'heroicon-o-pencil';
 
 
     public static function form(Form $form): Form
@@ -69,6 +77,8 @@ class StudentResource extends Resource
                     ->label(__('Mother Job'))
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('birth_date')
+                    ->format('d-m-Y')
+                    ->displayFormat('d-m-Y')
                     ->label(__('Birth Date'))
                     ->native(false),
                 Forms\Components\TextInput::make('birth_place')
@@ -104,7 +114,7 @@ class StudentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('birth_date')
                     ->label(__('Birth Date'))
-                    ->date()
+                    ->date('d-m-Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('birth_place')
                     ->label(__('Birth Place'))

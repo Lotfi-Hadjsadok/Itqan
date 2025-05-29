@@ -22,11 +22,20 @@
     "Group": "المجموعة",
     "Groups": "المجموعات",
     "Group name": "اسم المجموعة",
-    "Performances": "الأداء",
-    "Performance": "الأداء",
+    "Performances": "العروض",
+    "Performance": "العرض",
     "Seance": "الحصة",
     "Seances": "الحصص",
     "Date": "التاريخ",
     "Date of seance": "تاريخ الحصة",
-    "The student": "الطالب"
+    "The student": "الطالب",
+    "Memorization": "الحفظ",
+    "Revision": "المراجعة",
+    "Performance type": "نوع العرض",
+    "Performance value": "مقدار العرض",
+    "Performance comment": "الملاحظات",
+    "Is present": "حاضر ؟",
+    "Users": "المستخدمين",
+    "Tools": "الأدوات",
+    "View": "عرض"
 }

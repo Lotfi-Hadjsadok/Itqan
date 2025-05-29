@@ -23,4 +23,9 @@ class Student extends Model
     {
         return $this->hasMany(Performance::class);
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_student', 'student_id', 'group_id');
+    }
 }

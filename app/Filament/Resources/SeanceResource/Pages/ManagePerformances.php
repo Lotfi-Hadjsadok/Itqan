@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\SeanceResource\Pages;
 
+use Filament\Tables;
 use Filament\Actions;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Enums\PerformanceType;
 use App\Filament\Resources\SeanceResource;
 use App\Filament\Resources\PerformanceResource;
+use Illuminate\Contracts\Database\Query\Builder;
 use Filament\Resources\Pages\ManageRelatedRecords;
-use Filament\Tables\Table;
-use Filament\Tables;
 
 
 class ManagePerformances extends ManageRelatedRecords
@@ -21,31 +23,54 @@ class ManagePerformances extends ManageRelatedRecords
         return __('Performances');
     }
 
+
     public function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('student_id')
-                    ->relationship('student', 'id')
-                    ->required(),
-            ]);
+            ->schema([]);
     }
 
+    protected function customQuery(Builder $query): Builder
+    {
+        if (auth()->user()->student) {
+            return $query->where('student_id', auth()->user()->student->id);
+        }
+
+        return $query;
+    }
 
     function table(Table $table): Table
     {
         return $table
+            ->paginated(!auth()->user()->hasRole('student'))
+            ->modifyQueryUsing(fn(Builder $query) => $this->customQuery($query))
             ->columns([
                 Tables\Columns\TextColumn::make('student.user.name')
                     ->label(__('The student'))
                     ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_present')
+                    ->label(__('Is present'))
+                    ->sortable()
+                    ->default(true),
+
+                Tables\Columns\SelectColumn::make('performance_type')
+                    ->label(__('Performance type'))
+                    ->options(PerformanceType::class)
+                    ->sortable(),
+
+                Tables\Columns\TextInputColumn::make('performance_value')
+                    ->label(__('Performance value'))
+
+
+                    ->sortable(),
+                Tables\Columns\TextInputColumn::make('performance_comment')
+                    ->type('textarea')
+                    ->label(__('Performance comment'))
+
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->headerActions([])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -57,8 +82,6 @@ class ManagePerformances extends ManageRelatedRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        return [];
     }
 }

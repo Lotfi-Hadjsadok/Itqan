@@ -18,6 +18,7 @@ class SchoolResource extends Resource
     protected static ?string $model = School::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function getModelLabel(): string
     {

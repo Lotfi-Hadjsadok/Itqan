@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->foreignId('seance_id')->constrained('seances')->onDelete('cascade');
+            $table->string('performance_type')->nullable();
+            $table->string('performance_value')->nullable();
+            $table->string('performance_comment')->nullable();
+            $table->boolean('is_present')->nullable();
             $table->timestamps();
         });
     }
