@@ -11,11 +11,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Resources\Pages\Page;
-use App\Filament\Resources\GroupResource\Pages;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\GroupResource\Pages\ManageSeances;
-use App\Filament\Resources\GroupRessourceResource\RelationManagers\SeancesRelationManager;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\GroupResource\Pages;
+use App\Filament\Resources\GroupResource\Pages\ManageSeances;
+use App\Filament\Resources\GroupResource\Pages\ManagePerformances;
+use App\Filament\Resources\GroupRessourceResource\RelationManagers\SeancesRelationManager;
 
 class GroupResource extends Resource
 {
@@ -103,6 +105,12 @@ class GroupResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(
+                fn(Model $record): string => auth()->user()->hasRole('student') ?
+                    GroupResource::getUrl('performances', [
+                        'record' => $record
+                    ]) : GroupResource::getUrl('edit', ['record' => $record])
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('Group name'))
@@ -124,11 +132,19 @@ class GroupResource extends Resource
             ])
             ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(auth()->user()->hasRole(roles: 'admin') || auth()->user()->teacher),
+                Tables\Actions\Action::make('performances')
+                    ->url(fn(Group $record): string => GroupResource::getUrl('performances', ['record' => $record]))
+                    ->icon('heroicon-o-calendar')
+                    ->color('success')
+                    ->label(__('Performances'))
+                    ->visible(auth()->user()->hasRole(roles: 'student')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(auth()->user()->hasRole(roles: 'admin') || auth()->user()->teacher),
                 ]),
             ]);
     }
@@ -145,6 +161,7 @@ class GroupResource extends Resource
             'create' => Pages\CreateGroup::route('/create'),
             'edit' => Pages\EditGroup::route('/{record}/edit'),
             'seances' => ManageSeances::route('/{record}/seances'),
+            'performances' => ManagePerformances::route('/{record}/performances'),
         ];
     }
 }

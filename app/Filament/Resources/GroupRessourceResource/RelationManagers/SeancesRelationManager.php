@@ -92,6 +92,7 @@ class SeancesRelationManager extends RelationManager
                             'student_id' => $studentId,
                             'seance_id' => $seance->id,
                             'performance_type' => $this->performanceType,
+                            'is_present' => false,
                         ]));
 
                         $livewire->redirect(SeanceResource::getUrl('performances', ['record' => $seance]));
