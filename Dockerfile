@@ -12,7 +12,7 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock package.json package-lock.json ./
 COPY bootstrap/ bootstrap/
 
-RUN composer install --no-interaction --no-dev
+RUN composer install --no-interaction
 
 
 COPY --chown=www-data:www-data . .

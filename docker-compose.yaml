@@ -8,6 +8,8 @@ services:
       - 82:8080
     volumes:
       - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
     environment:
       - AUTORUN_ENABLED=true
 
